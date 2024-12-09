@@ -1,0 +1,113 @@
+/* 通用樣式 */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+}
+
+/* 頁首樣式 */
+header {
+  text-align: center;
+  padding: 20px;
+  background-color: #4a90e2;
+  color: #fff;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header nav {
+  margin-top: 10px;
+}
+
+header nav a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+/* 主要內容 */
+main {
+  width: 80%;
+  margin: 20px auto;
+  text-align: center; /* 將內容置中 */
+}
+
+/* 分類與文章樣式 */
+section {
+  margin-bottom: 20px;
+}
+
+h2, h3 {
+  color: #333;
+}
+
+a {
+  color: #007acc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* 按鈕樣式 */
+button {
+  padding: 10px 15px;
+  background-color: #007acc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #005f99;
+}
+
+/* 筆記樣式 */
+.note {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  background-color: #fff;
+}
+
+.note button {
+  margin-top: 5px;
+}
+
+/* 留言框樣式 */
+#comments {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: left; /* 文字靠左 */
+}
+
+#comments textarea {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#comment-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#comment-list li {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+}
