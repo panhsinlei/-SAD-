@@ -1,96 +1,66 @@
-import com.sun.net.httpserver.HttpExchange;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Article {
-    private final Map<Integer, String[]> articles = new HashMap<>();
-    private int articleId = 1;
+    private static final Map<Integer, Article> articles = new HashMap<>();
 
-    // 新增文章
-    public void handleUpload(HttpExchange exchange) throws IOException {
-        if ("POST".equals(exchange.getRequestMethod())) {
-            String body = new String(exchange.getRequestBody().readAllBytes());
-            String[] parts = body.split("&");
-            String title = parts[0].split("=")[1];
-            String content = parts[1].split("=")[1];
+    private final int id;
+    private final String title;
+    private final String content;
+    private final String tag; // 新增標籤屬性
 
-            articles.put(articleId++, new String[]{title, content});
-            exchange.getResponseHeaders().set("Location", "/articles");
-            exchange.sendResponseHeaders(302, -1);
-        } else {
-            exchange.sendResponseHeaders(405, -1);
-        }
+    // 建構子
+    public Article(int id, String title, String content, String tag) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.tag = tag;
     }
 
-    // 顯示文章列表
-    public void handleList(HttpExchange exchange) throws IOException {
-        if ("GET".equals(exchange.getRequestMethod())) {
-            StringBuilder response = new StringBuilder("<html><body><h1>Articles</h1><ul>");
-            for (Map.Entry<Integer, String[]> entry : articles.entrySet()) {
-                response.append("<li><a href=\"/article/")
-                        .append(entry.getKey())
-                        .append("\">")
-                        .append(entry.getValue()[0])
-                        .append("</a></li>");
+    // 初始化假資料
+    static {
+        articles.put(1, new Article(1, "Hello World", "This is a test article about the world of programming.", "最新科技趨勢"));
+        articles.put(2, new Article(2, "Java Programming", "Learn the basics of Java and how to build your first project.", "課外閱讀推薦"));
+        articles.put(3, new Article(3, "Career Tips", "Explore how to excel in your career with tips and tricks.", "職涯經驗分享"));
+    }
+
+    // 獲取所有文章
+    public static Map<Integer, Article> getAllArticles() {
+        return articles;
+    }
+
+    // 根據 ID 獲取單篇文章
+    public static Article getArticleById(int id) {
+        return articles.get(id);
+    }
+
+    // 根據標籤篩選文章
+    public static List<Article> getArticlesByTag(String tag) {
+        List<Article> filteredArticles = new ArrayList<>();
+        for (Article article : articles.values()) {
+            if (article.tag.equals(tag)) {
+                filteredArticles.add(article);
             }
-            response.append("</ul><a href=\"/\">Back to upload page</a></body></html>");
-
-            sendResponse(exchange, response.toString());
-        } else {
-            exchange.sendResponseHeaders(405, -1);
         }
+        return filteredArticles;
     }
 
-    // 顯示單篇文章
-    public void handleView(HttpExchange exchange) throws IOException {
-        String path = exchange.getRequestURI().getPath();
-        if (path.startsWith("/article/")) {
-            int id = Integer.parseInt(path.substring(9));
-            String[] article = articles.get(id);
-
-            if (article != null) {
-                String response = "<html><body><h1>" + article[0] + "</h1><p>" + article[1] + "</p>"
-                        + "<a href=\"/articles\">Back to article list</a></body></html>";
-                sendResponse(exchange, response);
-            } else {
-                exchange.sendResponseHeaders(404, -1);
-            }
-        } else {
-            exchange.sendResponseHeaders(405, -1);
-        }
+    // Getter 方法
+    public int getId() {
+        return id;
     }
 
-    // 搜尋文章
-    public void handleSearch(HttpExchange exchange) throws IOException {
-        if ("GET".equals(exchange.getRequestMethod())) {
-            String query = exchange.getRequestURI().getQuery();
-            String keyword = query != null ? query.split("=")[1].toLowerCase() : "";
-
-            StringBuilder response = new StringBuilder("<html><body><h1>Search Results</h1><ul>");
-            for (Map.Entry<Integer, String[]> entry : articles.entrySet()) {
-                String title = entry.getValue()[0];
-                if (title.toLowerCase().contains(keyword)) {
-                    response.append("<li><a href=\"/article/")
-                            .append(entry.getKey())
-                            .append("\">")
-                            .append(title)
-                            .append("</a></li>");
-                }
-            }
-            response.append("</ul><a href=\"/\">Back to upload page</a></body></html>");
-            sendResponse(exchange, response.toString());
-        } else {
-            exchange.sendResponseHeaders(405, -1);
-        }
+    public String getTitle() {
+        return title;
     }
 
-    private void sendResponse(HttpExchange exchange, String response) throws IOException {
-        exchange.sendResponseHeaders(200, response.getBytes().length);
-        try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes());
-        }
+    public String getContent() {
+        return content;
+    }
+
+    public String getTag() {
+        return tag;
     }
 }

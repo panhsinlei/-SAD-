@@ -1,5 +1,6 @@
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -7,21 +8,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class StaticFileHandler implements HttpHandler {
-    private final String staticDir;
-
-    public StaticFileHandler(String staticDir) {
-        this.staticDir = staticDir;
-    }
+    private static final String STATIC_DIR = "test/public";
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if ("GET".equals(exchange.getRequestMethod())) {
             String path = exchange.getRequestURI().getPath();
             if (path.equals("/")) {
-                path = "/index.html";
+                path = "/index.html"; // 預設加載 index.html
             }
 
-            Path filePath = Paths.get(staticDir + path);
+            Path filePath = Paths.get(STATIC_DIR + path);
             if (Files.exists(filePath)) {
                 byte[] content = Files.readAllBytes(filePath);
                 exchange.sendResponseHeaders(200, content.length);
@@ -29,10 +26,10 @@ public class StaticFileHandler implements HttpHandler {
                     os.write(content);
                 }
             } else {
-                exchange.sendResponseHeaders(404, -1);
+                exchange.sendResponseHeaders(404, -1); // 文件未找到
             }
         } else {
-            exchange.sendResponseHeaders(405, -1);
+            exchange.sendResponseHeaders(405, -1); // 方法不允許
         }
     }
 }
