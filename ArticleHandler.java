@@ -12,10 +12,12 @@ public class ArticleHandler implements HttpHandler {
             String articleIdStr = path.substring(9); // 提取文章 ID
             int id = Integer.parseInt(articleIdStr);
 
-            String[] article = Article.getArticleById(id);
+            Article article = Article.getArticleById(id);
 
             if (article != null) {
-                String response = "<html><body><h1>" + article[0] + "</h1><p>" + article[1] + "</p>"
+                String response = "<html><body><h1>" + article.getTitle() + "</h1>"
+                        + "<p>" + article.getContent() + "</p>"
+                        + "<p><strong>Tag: </strong>" + article.getTag() + "</p>"
                         + "<a href=\"/articles\">Back to article list</a></body></html>";
 
                 exchange.sendResponseHeaders(200, response.getBytes().length);
