@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Browser</title>
+</head>
+<body>
+    <h1>Article Browser</h1>
+
+    <h2>Upload Article</h2>
+    <form action="/upload" method="POST">
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title" required><br><br>
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+        <input type="submit" value="Upload">
+    </form>
+
+    <h2>Search Articles</h2>
+    <form id="searchForm">
+        <label for="search">Enter keyword:</label><br>
+        <input type="text" id="search" name="search" required><br><br>
+        <input type="submit" value="Search">
+    </form>
+    <div id="search-results"></div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const keyword = document.getElementById('search').value;
+            fetch(`/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('search-results').innerHTML = data;
+                });
+        });
+    </script>
+</body>
+</html>
+
