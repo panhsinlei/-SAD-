@@ -1,40 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article Browser</title>
+    <title>資管學習資源平台</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: #0078d7;
+            color: #fff;
+            padding: 1rem 0;
+        }
+        header h1 {
+            margin: 0;
+        }
+        main {
+            margin: 2rem;
+        }
+        a {
+            text-decoration: none;
+            color: #0078d7;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .section {
+            margin: 1.5rem 0;
+        }
+        .tag-link {
+            display: inline-block;
+            margin: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f0f0f0;
+            border-radius: 5px;
+            color: #0078d7;
+        }
+        .tag-link:hover {
+            background: #0078d7;
+            color: #fff;
+        }
+    </style>
 </head>
 <body>
-    <h1>Article Browser</h1>
+    <header>
+        <h1>資管學習資源平台</h1>
+    </header>
+    <main>
+        <p>歡迎來到資管學習資源平台！我們致力於為學生提供最新科技趨勢、職涯經驗分享，以及課外閱讀推薦。</p>
+        
+        <div class="section">
+            <h2>探索文章</h2>
+            <p><a href="/articles">查看所有文章</a></p>
+        </div>
 
-    <h2>Upload Article</h2>
-    <form action="/upload" method="POST">
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title" required><br><br>
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
-        <input type="submit" value="Upload">
-    </form>
+        <div class="section">
+            <h2>按分類瀏覽</h2>
+            <a href="/articles?tag=最新科技趨勢" class="tag-link">最新科技趨勢</a>
+            <a href="/articles?tag=職涯經驗分享" class="tag-link">職涯經驗分享</a>
+            <a href="/articles?tag=課外閱讀推薦" class="tag-link">課外閱讀推薦</a>
+        </div>
 
-    <h2>Search Articles</h2>
-    <form id="searchForm">
-        <label for="search">Enter keyword:</label><br>
-        <input type="text" id="search" name="search" required><br><br>
-        <input type="submit" value="Search">
-    </form>
-    <div id="search-results"></div>
-
-    <script>
-        document.getElementById('searchForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-            const keyword = document.getElementById('search').value;
-            fetch(`/search?keyword=${encodeURIComponent(keyword)}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('search-results').innerHTML = data;
-                });
-        });
-    </script>
+        <div class="section">
+            <h2>關於我們</h2>
+            <p>本平台專為資管系學生設計，旨在促進資源分享與知識交流。</p>
+        </div>
+    </main>
 </body>
 </html>
