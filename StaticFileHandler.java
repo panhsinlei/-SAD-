@@ -1,4 +1,3 @@
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -19,10 +18,31 @@ public class StaticFileHandler implements HttpHandler {
                 path = "/index.html"; // 預設加載 index.html
             }
 
-            Path filePath = Paths.get(STATIC_DIR + path);
+            Path filePath = Paths.get(STATIC_DIR, path);
             if (Files.exists(filePath)) {
+                String mimeType = Files.probeContentType(filePath);
+
+                // 明確設置 MIME 類型
+                if (mimeType == null) {
+                    if (filePath.toString().endsWith(".css")) {
+                        mimeType = "text/css";
+                    } else if (filePath.toString().endsWith(".html")) {
+                        mimeType = "text/html";
+                    } else if (filePath.toString().endsWith(".js")) {
+                        mimeType = "application/javascript";
+                    } else {
+                        mimeType = "application/octet-stream";
+                    }
+                }
+
+                // 設置回應頭並處理字符編碼
                 byte[] content = Files.readAllBytes(filePath);
+                if (mimeType.startsWith("text/")) {
+                    mimeType += "; charset=UTF-8"; // 為文本類型添加 UTF-8 編碼
+                }
+                exchange.getResponseHeaders().set("Content-Type", mimeType);
                 exchange.sendResponseHeaders(200, content.length);
+
                 try (OutputStream os = exchange.getResponseBody()) {
                     os.write(content);
                 }
