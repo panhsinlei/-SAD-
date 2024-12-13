@@ -2,7 +2,7 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-public class CArticleBrowserServer {
+public class ArticleBrowserServer {
     private static final int PORT = 8080;
 
     public static void main(String[] args) throws IOException {
