@@ -45,6 +45,18 @@ public class Article {
         return articles;
     }
 
+    // 根據關鍵字搜索文章
+    public static List<Article> getArticlesByKeyword(String keyword) {
+        List<Article> filteredArticles = new ArrayList<>();
+        for (Article article : articles.values()) {
+            if (article.getTitle().contains(keyword) || article.getContent().contains(keyword)) {
+               filteredArticles.add(article);
+            }
+      }
+      return filteredArticles;
+    }
+
+
     // 根據 ID 獲取單篇文章
     public static Article getArticleById(int id) {
         return articles.get(id);
