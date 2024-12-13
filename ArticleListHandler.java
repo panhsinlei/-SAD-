@@ -11,16 +11,28 @@ import java.util.List;
 public class ArticleListHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        String query = exchange.getRequestURI().getQuery();
+        String query = exchange.getRequestURI().getQuery(); // e.g., "keyword=example"
         List<Article> articles;
+        String keyword = null;
         String tag = null;
 
-        if (query != null && query.startsWith("tag=")) {
-            tag = query.substring(4); // 提取標籤
+        // 判斷是否有 keyword 或 tag 參數
+        if (query != null) {
+            if (query.startsWith("keyword=")) {
+                keyword = query.substring(8); // 提取關鍵字
+            } else if (query.startsWith("tag=")) {
+                tag = query.substring(4); // 提取標籤
+            }
         }
-
-        articles = (tag != null) ? Article.getArticlesByTag(tag) : new ArrayList<>(Article.getAllArticles().values());
-
+        // 根據參數篩選文章
+        if (keyword != null) {
+            articles = Article.getArticlesByKeyword(keyword); // 根據關鍵字搜索
+        } else if (tag != null) {
+            articles = Article.getArticlesByTag(tag); // 根據標籤篩選
+        } else {
+            articles = new ArrayList<>(Article.getAllArticles().values()); // 獲取所有文章
+        }
+        
         StringBuilder json = new StringBuilder("[");
         for (int i = 0; i < articles.size(); i++) {
             Article article = articles.get(i);
