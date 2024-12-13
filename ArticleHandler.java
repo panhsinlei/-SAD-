@@ -16,10 +16,14 @@ public class ArticleHandler implements HttpHandler {
             Article article = Article.getArticleById(id);
 
             if (article != null) {
-                String response = "<html><body><h1>" + article.getTitle() + "</h1>"
+                String response = "<html><head><title>" + article.getTitle() + "</title>"
+                        + "<link rel=\"stylesheet\" href=\"/styles.css\"></head><body>"
+                        + "<header><h1>資管學習資源平台</h1></header>"
+                        + "<main><h2>" + article.getTitle() + "</h2>"
                         + "<p>" + article.getContent() + "</p>"
                         + "<p><strong>Tag: </strong>" + article.getTag() + "</p>"
-                        + "<a href=\"/articles\">Back to article list</a></body></html>";
+                        + "<a href=\"/articles\">返回文章列表</a></main></body></html>";
+
 
                 exchange.sendResponseHeaders(200, response.getBytes().length);
                 try (OutputStream os = exchange.getResponseBody()) {
