@@ -1,3 +1,4 @@
+package src;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class StaticFileHandler implements HttpHandler {
-    private static final String STATIC_DIR = "C:\\Users\\a\\Desktop\\SAD project"; // 指向你的專案目錄
+    private static final Path STATIC_DIR = Paths.get("static"); // 靜態文件相對目錄
 
 
     @Override
@@ -18,7 +19,7 @@ public class StaticFileHandler implements HttpHandler {
                 path = "/index.html"; // 預設加載 index.html
             }
 
-            Path filePath = Paths.get(STATIC_DIR, path);
+            Path filePath = STATIC_DIR.resolve("." + path).normalize(); // 確保安全地解析路徑
             if (Files.exists(filePath)) {
                 String mimeType = Files.probeContentType(filePath);
 
