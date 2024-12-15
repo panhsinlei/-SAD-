@@ -16,9 +16,9 @@ public class ArticleHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
         if (path.startsWith("/article/")) {
-            int id = Integer.parseInt(path.substring(9)); // 提取文章 ID
+            int ArticleId = Integer.parseInt(path.substring(9)); // 提取文章 ID
 
-            Article article = Article.getArticleById(id);
+            Article article = Article.getArticleById(ArticleId);
 
             if (article != null) {
                 Path templatePath = TEMPLATE_DIR.resolve("article.html").normalize(); // 確保路徑安全

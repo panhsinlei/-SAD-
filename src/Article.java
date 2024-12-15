@@ -8,14 +8,14 @@ import java.util.Map;
 public class Article {
     private static final Map<Integer, Article> articles = new HashMap<>();
 
-    private final int id;
+    private final int ArticleId;
     private final String title;
     private final String content;
-    private final String tag; // 新增標籤屬性
+    private final String tag;
 
     // 建構子
-    public Article(int id, String title, String content, String tag) {
-        this.id = id;
+    public Article(int ArticleId, String title, String content, String tag) {
+        this.ArticleId = ArticleId;
         this.title = title;
         this.content = content;
         this.tag = tag;
@@ -23,7 +23,7 @@ public class Article {
 
     // 初始化假資料
     static {
-        int idCounter = 1;
+        int idCounter = 0;
 
         // 最新科技趨勢
         articles.put(idCounter++, new Article(idCounter, "AI Revolution", "Exploring the future of artificial intelligence.", "最新科技趨勢"));
@@ -59,8 +59,8 @@ public class Article {
 
 
     // 根據 ID 獲取單篇文章
-    public static Article getArticleById(int id) {
-        return articles.get(id);
+    public static Article getArticleById(int ArticleId) {
+        return articles.get(ArticleId);
     }
 
     // 根據標籤篩選文章
@@ -76,7 +76,7 @@ public class Article {
 
     // Getter 方法
     public int getId() {
-        return id;
+        return ArticleId;
     }
 
     public String getTitle() {
